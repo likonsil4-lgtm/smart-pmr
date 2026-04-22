@@ -813,6 +813,155 @@
         body.modal-open {
             overflow: hidden;
         }
+                /* Отзывы */
+        .reviews {
+            background: var(--dark);
+            position: relative;
+        }
+
+        .reviews-empty {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--dark-light);
+            border: 2px dashed rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+        }
+
+        .empty-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: var(--primary);
+        }
+
+        .reviews-empty h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .reviews-empty > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .empty-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .empty-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .empty-feature svg {
+            flex-shrink: 0;
+        }
+
+        .be-first {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .be-first p {
+            margin-bottom: 0.5rem;
+        }
+
+        .be-first-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Превью системы (для будущего) */
+        .reviews-system-preview {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .system-card {
+            background: var(--dark-light);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .system-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-card > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .system-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .sys-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+        }
+
+        .sys-num {
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .empty-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .reviews-empty {
+                padding: 2rem 1.5rem;
+            }
+            
+            .system-steps {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -823,6 +972,7 @@
         <ul class="nav-links">
             <li><a href="#services">Услуги</a></li>
             <li><a href="#why-us">Почему мы</a></li>
+            <li><a href="#reviews">Отзывы</a></li>
             <li><a href="#contact">Контакты</a></li>
         </ul>
         <div class="mobile-menu">☰</div>
@@ -964,6 +1114,62 @@
                 <p>2 года гарантии на работы и оборудование. Отвечаем на звонки даже в выходные</p>
             </div>
         </div>
+            <!-- Отзывы -->
+    <section class="reviews" id="reviews">
+        <div class="section-header scroll-reveal">
+            <h2>Отзывы <span>клиентов</span></h2>
+            <p>Мы только начинаем свой путь, но уже гордимся каждым довольным клиентом</p>
+        </div>
+        
+        <div class="reviews-empty scroll-reveal">
+            <div class="empty-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+            </div>
+            <h3>Пока отзывов нет</h3>
+            <p>Мы недавно начали работу, но уже выполнили несколько проектов.<br>Скоро здесь появятся реальные отзывы наших клиентов.</p>
+            <div class="empty-features">
+                <div class="empty-feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Только реальные клиенты</span>
+                </div>
+                <div class="empty-feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>С проверкой через заказ</span>
+                </div>
+            </div>
+            <div class="be-first">
+                <p><strong>Хотите стать первым?</strong></p>
+                <p class="be-first-desc">Закажите любую услугу, и после выполнения мы пришлём вам персональную ссылку для оставления отзыва.</p>
+                <a href="#contact" class="btn btn-primary">Оставить заявку</a>
+            </div>
+        </div>
+
+        <!-- Заглушка будущей системы отзывов (пока скрыта) -->
+        <div class="reviews-system-preview scroll-reveal" style="display: none;">
+            <div class="system-card">
+                <div class="system-icon">🔐</div>
+                <h4>Защищённая система отзывов</h4>
+                <p>Отзывы оставляются только по одноразовым ссылкам, которые мы отправляем реальным клиентам после выполнения работ.</p>
+                <div class="system-steps">
+                    <div class="sys-step">
+                        <span class="sys-num">1</span>
+                        <span>Вы выполняете заказ</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">2</span>
+                        <span>Мы отправляем ссылку на email</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">3</span>
+                        <span>Клиент ставит оценку и пишет текст</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">4</span>
+                        <span>Отзыв автоматически появляется на сайте</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- CTA -->
@@ -991,8 +1197,8 @@
             <div class="contact-item scroll-reveal">
                 <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="8" y1="12" x2="8.01" y2="12"/><line x1="12" y1="12" x2="12.01" y2="12"/><line x1="16" y1="12" x2="16.01" y2="12"/></svg></div>
                 <h3>WhatsApp / Telegram</h3>
-                <p><a href="https://wa.me/37377712345">Написать в WhatsApp</a></p>
-                <p><a href="https://t.me/iottipair">@iottipair</a></p>
+                <p><a href="https://wa.me/37377718802">Написать в WhatsApp</a></p>
+                <p><a href="https://t.me/likonsil4">Написать в Telegram</a></p>
             </div>
             <div class="contact-item scroll-reveal">
                 <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
