@@ -591,6 +591,228 @@
             opacity: 1;
             transform: translateY(0);
         }
+                /* Модальные окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            background: var(--dark-light);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            z-index: 2001;
+            overflow-y: auto;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: var(--dark-light);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-section p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .example-card {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .example-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .example-img {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .example-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .example-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .price-tag {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-1);
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .price-note {
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: var(--dark-light);
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        /* Курсор для карточек */
+        .service-card {
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Адаптивность модалок */
+        @media (max-width: 768px) {
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .examples {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -609,7 +831,7 @@
     <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge animate delay-1">🚀 Работаем по всему Приднестровью</div>
+            <div class="hero-badge animate delay-1"> Работаем по всему Приднестровью</div>
             <h1 class="animate delay-2">Умные системы для <span>дома и бизнеса</span></h1>
             <p class="animate delay-3">Видеонаблюдение, умный дом, автоматизация теплиц и полива. Установка под ключ в Тирасполе и по всему ПМР. Управляй всем со смартфона — где бы ты ни был.</p>
             <div class="hero-buttons animate delay-4">
@@ -626,7 +848,7 @@
                     <div class="stat-label">Под ключ</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number">0₽</div>
+                    <div class="stat-number">0Р</div>
                     <div class="stat-label">Выезд на замер</div>
                 </div>
             </div>
@@ -641,21 +863,21 @@
         </div>
         <div class="services-grid">
             <div class="service-card scroll-reveal">
-                <div class="service-icon">📹</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
                 <h3>Видеонаблюдение</h3>
-                <p>IP-камеры с ночным видением, распознаванием лиц и номеров. Просмотр с телефона из любой точки мира.</p>
+                <p>IP-камеры с ночным видением, распознаванием лиц. Просмотр с телефона из любой точки мира. Подберем камеры под любые задачи.</p>
                 <ul class="service-features">
-                    <li>Установка за 1 день</li>
+                    <li>Установка в кратчайшие сроки</li>
                     <li>Облачная запись</li>
                     <li>Оповещения на телефон</li>
-                    <li>Работа без света (PoE)</li>
+                    <li>Работа на питании (PoE)</li>
                 </ul>
             </div>
 
             <div class="service-card scroll-reveal">
-                <div class="service-icon">🏠</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/><path d="M13 2L3 9" stroke-opacity="0.3"/></svg></div>
                 <h3>Умный дом</h3>
-                <p>Управление светом, отоплением, замками и шторами со смартфона. Сценарии «Я дома», «Режим отпуска».</p>
+                <p>Управление светом, отоплением, замками и шторами со смартфона. Сценарии «Я дома», «Режим отпуска». Управление всеми функциями с одного приложения.</p>
                 <ul class="service-features">
                     <li>Голосовое управление</li>
                     <li>Экономия до 30% энергии</li>
@@ -665,7 +887,7 @@
             </div>
 
             <div class="service-card scroll-reveal">
-                <div class="service-icon">🌱</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/><path d="M12 6v12"/><path d="M8 10c1.5-1 2.5-1 4 0s2.5 1 4 0"/><path d="M8 14c1.5 1 2.5 1 4 0s2.5-1 4 0"/></svg></div>
                 <h3>Агро-IoT</h3>
                 <p>Датчики температуры, влажности почвы и воздуха для теплиц. Автоматический полив и вентиляция.</p>
                 <ul class="service-features">
@@ -677,19 +899,19 @@
             </div>
 
             <div class="service-card scroll-reveal">
-                <div class="service-icon">💧</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 18a4 4 0 0 0 0-8" stroke-dasharray="2 2"/></svg></div>
                 <h3>Ирригация</h3>
-                <p>Дистанционное управление дождевальными машинами и насосами. Контроль расхода воды и графики полива.</p>
+                <p>Дистанционное управление дождевальными машинами и насосами. Контроль расхода воды и графики полива. Настроим под интересы каждого.</p>
                 <ul class="service-features">
                     <li>Запуск с телефона</li>
-                    <li>Полив по погоде</li>
+                    <li>Полив по расписанию или погоде</li>
                     <li>Контроль расхода воды</li>
-                    <li>Защита от сухого хода</li>
+                    <li>Любые функции мониторинга</li>
                 </ul>
             </div>
 
             <div class="service-card scroll-reveal">
-                <div class="service-icon">🏭</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6" y2="6"/><line x1="6" y1="18" x2="6" y2="18"/><path d="M14 10V6"/><path d="M14 18v-4"/><circle cx="18" cy="6" r="1"/><circle cx="18" cy="18" r="1"/></svg></div>
                 <h3>Промышленный мониторинг</h3>
                 <p>Контроль температуры на складах, утечек газа и воды, энергопотребления. Системы безопасности.</p>
                 <ul class="service-features">
@@ -701,12 +923,12 @@
             </div>
 
             <div class="service-card scroll-reveal">
-                <div class="service-icon">🔧</div>
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
                 <h3>Обслуживание</h3>
-                <p>Гарантийное и постгарантийное обслуживание всех установленных систем. Выезд в день обращения.</p>
+                <p>Гарантийное и постгарантийное обслуживание всех установленных систем. Выезд в кратчайшие сроки.</p>
                 <ul class="service-features">
                     <li>Гарантия 2 года</li>
-                    <li>Выезд в день звонка</li>
+                    <li>Выезд в кратчайшие сроки</li>
                     <li>Замена оборудования</li>
                     <li>Удалённая диагностика</li>
                 </ul>
@@ -722,22 +944,22 @@
         </div>
         <div class="features-grid">
             <div class="feature-item scroll-reveal">
-                <div class="feature-icon">🎯</div>
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></div>
                 <h3>Индивидуальный подход</h3>
-                <p>Подбираем оборудование под ваш бюджет и задачи, без переплаты за ненужные функции</p>
+                <p>Подбираем оборудование и прошивки под ваш бюджет и задачи, без переплаты за ненужные функции. Реализуем любые желания в вашем приложении</p>
             </div>
             <div class="feature-item scroll-reveal">
-                <div class="feature-icon">⚡</div>
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
                 <h3>Быстрый монтаж</h3>
-                <p>Среднее время установки — от 2 часов до 1 дня в зависимости от сложности</p>
+                <p>Среднее время установки — от 1 до 2 дней в зависимости от сложности</p>
             </div>
             <div class="feature-item scroll-reveal">
-                <div class="feature-icon">📱</div>
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
                 <h3>Удалённый доступ</h3>
-                <p>Настраиваем доступ с телефона до того, как уедем. Показываем, как пользоваться</p>
+                <p>Настраиваем доступ с телефона до того, как уедем. Показываем и прописываем инструкцию пользования</p>
             </div>
             <div class="feature-item scroll-reveal">
-                <div class="feature-icon">🛡️</div>
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
                 <h3>Гарантия и поддержка</h3>
                 <p>2 года гарантии на работы и оборудование. Отвечаем на звонки даже в выходные</p>
             </div>
@@ -757,23 +979,23 @@
     <section class="contact" id="contact">
         <div class="section-header scroll-reveal">
             <h2>Наши <span>контакты</span></h2>
-            <p>Свяжитесь с нами удобным способом — ответим в течение 15 минут</p>
+            <p>Свяжитесь с нами удобным способом</p>
         </div>
         <div class="contact-grid">
             <div class="contact-item scroll-reveal">
-                <div class="contact-icon">📞</div>
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
                 <h3>Телефон</h3>
-                <p><a href="tel:+37377712345">+373 777 12 345</a></p>
+                <p><a href="tel:+37377712345">+373 777 18 802</a></p>
                 <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ежедневно с 8:00 до 20:00</p>
             </div>
             <div class="contact-item scroll-reveal">
-                <div class="contact-icon">💬</div>
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="8" y1="12" x2="8.01" y2="12"/><line x1="12" y1="12" x2="12.01" y2="12"/><line x1="16" y1="12" x2="16.01" y2="12"/></svg></div>
                 <h3>WhatsApp / Telegram</h3>
                 <p><a href="https://wa.me/37377712345">Написать в WhatsApp</a></p>
                 <p><a href="https://t.me/iottipair">@iottipair</a></p>
             </div>
             <div class="contact-item scroll-reveal">
-                <div class="contact-icon">📍</div>
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                 <h3>Адрес</h3>
                 <p>г. Тирасполь, Приднестровье</p>
                 <p style="font-size: 0.85rem; margin-top: 0.5rem;">Выезд по всему ПМР</p>
@@ -787,8 +1009,276 @@
         <p>© 2026 IoT-TiPair. Умные системы для дома и бизнеса в Приднестровье.<br>Все права защищены.</p>
     </footer>
 
+
+        <!-- Модальные окна для услуг -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
+
+    <!-- Модальное окно 1: Видеонаблюдение -->
+    <div id="modal-1" class="modal">
+        <div class="modal-header">
+            <h3>Видеонаблюдение</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Полный комплект под ключ: от подбора оборудования до настройки удалённого просмотра на вашем телефоне. Установка системы где угодно, даже в поле. Работаем с проверенными брендами: Hikvision, Dahua, Ezviz, TP-Link и др.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Бесплатный выезд и замер</div>
+                    <div class="step"><span class="step-num">2</span> Подбор оптимального комплекта</div>
+                    <div class="step"><span class="step-num">3</span> Монтаж и прокладка кабелей</div>
+                    <div class="step"><span class="step-num">4</span> Настройка и обучение</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #0ea5e9);"></div>
+                        <p><strong>Частный дом, Тирасполь</strong></p>
+                        <p class="example-desc">4 камеры, ночное видение, распознавание номеров. Установка за 4 часа.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #10b981);"></div>
+                        <p><strong>Магазин, Бендеры</strong></p>
+                        <p class="example-desc">8 камер + POS-интеграция. Контроль кассовых операций.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества камер и сложности монтажа. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 2: Умный дом -->
+    <div id="modal-2" class="modal">
+        <div class="modal-header">
+            <h3>Умный дом</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Автоматизация освещения, отопления, климат-контроля, замков и штор. Управление голосом (Алиса, Google) или через приложение. Сценарии: "Я дома", "Ушёл", "Кино", "Отпуск".</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Аудит и проектирование</div>
+                    <div class="step"><span class="step-num">2</span> Подбор устройств (Zigbee, WiFi, Z-Wave)</div>
+                    <div class="step"><span class="step-num">3</span> Установка и интеграция</div>
+                    <div class="step"><span class="step-num">4</span> Настройка сценариев</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f59e0b);"></div>
+                        <p><strong>Квартира, Тирасполь</strong></p>
+                        <p class="example-desc">Умный свет, термостат, motorized шторы. Экономия 25% на электричестве.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #ec4899);"></div>
+                        <p><strong>Загородный дом, Днестровск</strong></p>
+                        <p class="example-desc">Полная автоматизация: ворота, полив, охрана, отопление. Управление из Москвы.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 3: Агро-IoT -->
+    <div id="modal-3" class="modal">
+        <div class="modal-header">
+            <h3>Агро-IoT</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Датчики температуры, влажности почвы и воздуха, CO₂, освещённости. Автоматический полив, вентиляция, отопление теплиц. Уведомления в Telegram или приложение при критических значениях.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Анализ теплицы/поля</div>
+                    <div class="step"><span class="step-num">2</span> Установка датчиков и контроллеров</div>
+                    <div class="step"><span class="step-num">3</span> Настройка автоматики</div>
+                    <div class="step"><span class="step-num">4</span> Обучение и поддержка</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #22c55e);"></div>
+                        <p><strong>Теплица 500 м², Григориополь</strong></p>
+                        <p class="example-desc">12 датчиков, автополив, климат-контроль. Урожайность выросла на 30%.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #84cc16);"></div>
+                        <p><strong>Ферма, Дубоссары</strong></p>
+                        <p class="example-desc">Мониторинг микроклимата птичника. Снижение смертности цыплят на 15%.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 4: Ирригация -->
+    <div id="modal-4" class="modal">
+        <div class="modal-header">
+            <h3>Ирригация</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Дистанционный запуск дождевальных машин, насосов и клапанов. Учёт расхода воды, запуск по расписанию в любых направления. Работа с любого расстояния — управление с телефона.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Обследование машин</div>
+                    <div class="step"><span class="step-num">2</span> Прокладка коммуникаций</div>
+                    <div class="step"><span class="step-num">3</span> Установка контроллеров</div>
+                    <div class="step"><span class="step-num">4</span> Настройка графиков полива</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #06b6d4);"></div>
+                        <p><strong>Поля 50 га, Каменка</strong></p>
+                        <p class="example-desc">3 дождевальные машины с GSM-управлением. Экономия 40% воды.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #0ea5e9);"></div>
+                        <p><strong>Сад, Рыбница</strong></p>
+                        <p class="example-desc">Капельный полив 200 деревьев. Автоматика по влажности почвы.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+               <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 5: Промышленный мониторинг -->
+    <div id="modal-5" class="modal">
+        <div class="modal-header">
+            <h3>Промышленный мониторинг</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Контроль температуры, влажности, утечек газа/воды, энергопотребления. Системы безопасности: датчики дыма, движения, затопления. Централизованный дашборд для руководства.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Аудит объекта</div>
+                    <div class="step"><span class="step-num">2</span> Проектирование системы</div>
+                    <div class="step"><span class="step-num">3</span> Монтаж датчиков и шлюзов</div>
+                    <div class="step"><span class="step-num">4</span> Интеграция и настройка алертов</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #6366f1);"></div>
+                        <p><strong>Склад 2000 м², Тирасполь</strong></p>
+                        <p class="example-desc">Мониторинг температуры 24/7. Предотвращено 2 порчи продукта.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #8b5cf6);"></div>
+                        <p><strong>Котельная, Бендеры</strong></p>
+                        <p class="example-desc">Датчики утечки газа и давления. SMS-оповещение диспетчеру.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Индивидуальный расчёт под объект любой сложности.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 6: Обслуживание -->
+    <div id="modal-6" class="modal">
+        <div class="modal-header">
+            <h3>Обслуживание</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Гарантийное и постгарантийное обслуживание всех установленных систем. Плановые проверки, замена оборудования, обновление ПО. Приоритетный выезд в день обращения.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Заявка по телефону/мессенджеру</div>
+                    <div class="step"><span class="step-num">2</span> Удалённая диагностика</div>
+                    <div class="step"><span class="step-num">3</span> Выезд специалиста в кратчайшие сроки</div>
+                    <div class="step"><span class="step-num">4</span> Ремонт или замена</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f43f5e);"></div>
+                        <p><strong>Срочный вызов, Тирасполь</strong></p>
+                        <p class="example-desc">Восстановление связи с камерами после грозы. Решено за 2 часа.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #fb7185);"></div>
+                        <p><strong>Плановое ТО, 12 объектов</strong></p>
+                        <p class="example-desc">Ежеквартальная проверка всех систем. Нулевой простой за год.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Для клиентов IoT-TiPair — приоритет и скидка 20%.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
     <script>
-        // Плавное появление при скролле
+                // Плавное появление при скролле
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -809,6 +1299,9 @@
         // Плавная прокрутка для якорных ссылок
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#contact' && document.querySelector('.modal.active')) {
+                    closeModal();
+                }
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -817,6 +1310,40 @@
                         block: 'start'
                     });
                 }
+            });
+        });
+
+        // Модальные окна
+        function openModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            const overlay = document.getElementById('modal-overlay');
+            
+            if (modal && overlay) {
+                overlay.classList.add('active');
+                modal.classList.add('active');
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        function closeModal() {
+            const modals = document.querySelectorAll('.modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            modals.forEach(modal => modal.classList.remove('active'));
+            if (overlay) overlay.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Добавляем обработчики клика на карточки
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.addEventListener('click', () => openModal(index + 1));
             });
         });
     </script>
