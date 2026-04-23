@@ -383,6 +383,7 @@
             padding: 0.3rem 0;
             padding-left: 1.5rem;
             position: relative;
+            line-height: 1.5;
         }
 
         .service-features li::before {
@@ -391,6 +392,7 @@
             left: 0;
             color: var(--secondary);
             font-weight: bold;
+            margin-right: 0.5rem;
         }
 
         /* Почему мы */
@@ -487,14 +489,16 @@
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            max-width: 800px;
+            gap: 2rem;
+            max-width: 900px;
             margin: 0 auto;
-            text-align: center;
         }
 
         .contact-item {
             padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .contact-icon {
@@ -1120,8 +1124,11 @@
             }
 
             .service-features li {
-                font-size: 0.8rem;
-                padding: 0.25rem 0;
+                font-size: 0.85rem;
+                padding: 0.35rem 0;
+                padding-left: 1.5rem;
+                position: relative;
+                line-height: 1.5;
             }
 
             /* Почему мы */
@@ -1177,11 +1184,20 @@
             .contact-item {
                 padding: 1.25rem;
                 display: flex;
-                align-items: center;
+                align-items: flex-start;
                 text-align: left;
                 gap: 1rem;
                 background: rgba(255,255,255,0.03);
                 border-radius: 14px;
+                border: 1px solid rgba(255,255,255,0.05);
+            }
+                        .contact-item > div:last-child {
+                min-width: 0;
+                overflow-wrap: break-word;
+            }
+
+            .contact-item h3 {
+                white-space: nowrap;
             }
 
             .contact-icon {
@@ -1402,6 +1418,7 @@
             }
         }
                 /* Липкая панель для мобильных */
+                /* Умная липкая панель — появляется после середины страницы */
         .mobile-sticky-bar {
             display: none;
             position: fixed;
@@ -1414,6 +1431,12 @@
             padding: 0.75rem 1rem;
             z-index: 1500;
             gap: 0.75rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-sticky-bar.visible {
+            transform: translateY(0);
         }
 
         .sticky-btn {
@@ -1450,9 +1473,14 @@
                 display: flex;
             }
 
-            /* Отступ для контента, чтобы панель не перекрывала */
-            footer {
-                padding-bottom: 6rem;
+            body {
+                padding-bottom: 0;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-sticky-bar {
+                display: none !important;
             }
         }
     </style>
@@ -1684,7 +1712,7 @@
             <div class="contact-item scroll-reveal">
                 <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
                 <h3>Телефон</h3>
-                <p><a href="tel:+37377712345">+373 777 18 802</a></p>
+                <p><a href="tel:+37377718802">+373 777 18 802</a></p>
                 <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ежедневно с 8:00 до 20:00</p>
             </div>
             <div class="contact-item scroll-reveal">
@@ -1975,7 +2003,7 @@
     </div>
 
     <script>
-                // Плавное появление при скролле
+               // Плавное появление при скролле
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -2036,7 +2064,25 @@
             if (e.key === 'Escape') closeModal();
         });
 
-                // Добавляем обработчики клика на карточки
+        // Умная липкая панель — появляется после середины страницы
+        function initStickyBar() {
+            const stickyBar = document.querySelector('.mobile-sticky-bar');
+            if (!stickyBar) return;
+
+            const halfHeight = document.body.scrollHeight / 2;
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY + window.innerHeight;
+                
+                if (currentScroll > halfHeight) {
+                    stickyBar.classList.add('visible');
+                } else {
+                    stickyBar.classList.remove('visible');
+                }
+            });
+        }
+
+        // Добавляем обработчики клика на карточки
         document.addEventListener('DOMContentLoaded', () => {
             const serviceCards = document.querySelectorAll('.service-card');
             serviceCards.forEach((card, index) => {
@@ -2067,7 +2113,6 @@
                 });
 
                 // Закрытие меню при скролле
-                let lastScroll = 0;
                 window.addEventListener('scroll', () => {
                     if (navLinks.classList.contains('active')) {
                         navLinks.classList.remove('active');
@@ -2083,9 +2128,13 @@
                     }
                 });
             }
+
+            // Инициализация умной панели
+            initStickyBar();
         });
     </script>
-        <!-- Липкая панель для мобильных -->
+
+    <!-- Липкая панель для мобильных -->
     <div class="mobile-sticky-bar">
         <a href="tel:+37377712345" class="sticky-btn sticky-call">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
