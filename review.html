@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оставить отзыв</title>
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+padding:20px;
+}
+.box{
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+max-width:500px;
+width:100%;
+}
+input,textarea,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+button{
+width:100%;
+padding:14px;
+background:#0ea5e9;
+color:white;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+}
+button:hover{
+background:#0284c7;
+}
+h2{
+margin-top:0;
+}
+</style>
+</head>
+<body>
+
+<div class="box" id="app">
+Загрузка...
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+updateDoc,
+addDoc,
+collection
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyD2UPZ6HZcUMrjTvFfGRJUvF2eo_nxo6yg",
+authDomain: "base-tipair-9de03.firebaseapp.com",
+projectId: "base-tipair-9de03",
+storageBucket: "base-tipair-9de03.firebasestorage.app",
+messagingSenderId: "1038757011708",
+appId: "1:1038757011708:web:142b4170779e7f02453779"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const token = new URLSearchParams(window.location.search).get("token");
+
+const appDiv = document.getElementById("app");
+
+if(!token){
+appDiv.innerHTML = "Ссылка неверная";
+}else{
+
+const tokenRef = doc(db,"tokens",token);
+const tokenSnap = await getDoc(tokenRef);
+
+if(!tokenSnap.exists()){
+appDiv.innerHTML = "Токен не найден";
+}else if(tokenSnap.data().used){
+appDiv.innerHTML = "Ссылка уже использована";
+}else{
+
+appDiv.innerHTML = `
+<h2>Оставить отзыв</h2>
+
+<input id="name" placeholder="Ваше имя">
+
+<select id="rating">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
+
+<textarea id="text" rows="5" placeholder="Ваш отзыв"></textarea>
+
+<button id="send">Отправить</button>
+`;
+
+document.getElementById("send").onclick = async ()=>{
+
+const name = document.getElementById("name").value;
+const rating = document.getElementById("rating").value;
+const text = document.getElementById("text").value;
+
+await addDoc(collection(db,"reviews"),{
+name,
+rating:Number(rating),
+text,
+approved:false,
+date:new Date().toLocaleDateString()
+});
+
+await updateDoc(tokenRef,{
+used:true
+});
+
+appDiv.innerHTML = "<h2>Спасибо за отзыв!</h2>";
+
+};
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
