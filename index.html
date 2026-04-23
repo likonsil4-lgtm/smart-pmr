@@ -149,6 +149,11 @@
             position: relative;
             overflow: hidden;
         }
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .hero::before {
             content: '';
@@ -1549,6 +1554,25 @@
         body {
             padding-bottom: calc(70px + env(safe-area-inset-bottom));
         }
+        .hero-video {
+            width: 45%;
+            max-width: 600px;
+        }
+        
+        .hero-video video {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        /* скрываем на телефоне */
+        @media (max-width: 768px) {
+            .hero-video {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1589,6 +1613,11 @@
                     <div class="stat-label">Выезд на замер</div>
                 </div>
             </div>
+        </div>
+        <div class="hero-video">
+            <video autoplay muted loop playsinline>
+                <source src="video.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
