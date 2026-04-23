@@ -1610,29 +1610,6 @@
                 display: none;
             }
         }
-
-        #preloader {
-            position: fixed;
-            inset: 0;
-            background: #0a0a0a;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .loader {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.2);
-            border-top: 3px solid #00aaff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
         @media (max-width: 1024px), (pointer: coarse) {
         .hero {
                 flex-direction: column;
@@ -1652,9 +1629,6 @@
     </style>
 </head>
 <body>
-    <div id="preloader">
-       <div class="loader"></div>
-    </div>
 
     <!-- Навигация -->
     <nav>
@@ -1694,8 +1668,9 @@
             </div>
         </div>
         <div class="hero-video">
-            <video autoplay muted loop playsinline>
-                <source src="video.mp4" type="video/mp4">
+            <video autoplay muted loop playsinline preload="none" poster="preview.jpg">
+                <source data-src="video.webm" type="video/webm">
+                <source data-src="video.mp4" type="video/mp4">
             </video>
         </div>
     </section>
@@ -2370,13 +2345,18 @@
                 const observer = new IntersectionObserver((entries, obs) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const src = video.getAttribute("data-src");
-            
-                            if (src) {
-                                video.src = src;
-                                video.load();
-                                video.play();
-                            }
+                            const sources = video.querySelectorAll("source");
+
+                            sources.forEach(source => {
+                                const src = source.dataset.src;
+                                if (src) {
+                                    source.src = src;
+                                }
+                            });
+                            
+                            video.load();
+                            
+                            video.play().catch(() => {});
             
                             obs.unobserve(video); // отключаем наблюдение
                         }
@@ -2386,28 +2366,6 @@
                 });
             
                 observer.observe(video);
-            });
-        </script>
-        <script>
-            window.addEventListener("load", function () {
-                const video = document.querySelector(".hero-video video");
-                const preloader = document.getElementById("preloader");
-            
-                if (!video) {
-                    preloader.style.display = "none";
-                    return;
-                }
-            
-                // если видео уже готово
-                if (video.readyState >= 3) {
-                    preloader.style.opacity = "0";
-                    setTimeout(() => preloader.style.display = "none", 500);
-                } else {
-                    video.addEventListener("loadeddata", () => {
-                        preloader.style.opacity = "0";
-                        setTimeout(() => preloader.style.display = "none", 500);
-                    });
-                }
             });
         </script>
         <script>
