@@ -1898,6 +1898,7 @@
                     <span>С проверкой через заказ</span>
                 </div>
             </div>
+            <div id="reviews-list" class="services-grid"></div>
             <div class="be-first">
                 <p><strong>Хотите стать первым?</strong></p>
                 <p class="be-first-desc">Закажите любую услугу, и после выполнения мы пришлём вам персональную ссылку для оставления отзыва.</p>
@@ -2537,5 +2538,50 @@
                 <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
             </div>
         </div>
+        <script type="module">
+
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+            import {
+                getFirestore,
+                collection,
+                getDocs
+            }
+            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+            const firebaseConfig = {
+                apiKey: "AIzaSyD2UPZ6HZcUMrjTvFfGRJUvF2eo_nxo6yg",
+                authDomain: "base-tipair-9de03.firebaseapp.com",
+                projectId: "base-tipair-9de03",
+                storageBucket: "base-tipair-9de03.firebasestorage.app",
+                messagingSenderId: "1038757011708",
+                appId: "1:1038757011708:web:142b4170779e7f02453779"
+            };
+    
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            
+            const box = document.getElementById("reviews-list");
+            
+            const snap = await getDocs(collection(db,"reviews"));
+            
+            snap.forEach(doc=>{
+            
+                const r = doc.data();
+                
+                if(r.approved){
+        
+                    box.innerHTML += `
+                    <div class="service-card">
+                    <h3>${r.name}</h3>
+                    <p>${"⭐".repeat(r.rating)}</p>
+                    <p>${r.text}</p>
+                    </div>
+                    `;
+                    
+                }
+    
+            });
+        </script>
     </body>
 </html>
