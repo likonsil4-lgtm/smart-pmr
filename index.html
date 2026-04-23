@@ -1,80 +1,2541 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Оставить отзыв</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>IoT-TiPair — Умные системы для дома и бизнеса в Тирасполе</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+            --gradient-2: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Навигация */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero секция */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Секции */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Услуги */
+        .services {
+            background: var(--dark-light);
+            position: relative;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .service-features li {
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Почему мы */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .feature-item h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* CTA секция */
+        .cta {
+            background: var(--gradient-1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Контакты */
+        .contact {
+            background: var(--dark-light);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--gray);
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Футер */
+        footer {
+            background: var(--dark);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Плавное появление при скролле */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+                /* Модальные окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            background: var(--dark-light);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            z-index: 2001;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            visibility: hidden;
+        }
+
+        .modal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: var(--dark-light);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-section p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .example-card {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .example-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .example-img {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .example-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .example-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .price-tag {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-1);
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .price-note {
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: var(--dark-light);
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        /* Курсор для карточек */
+        .service-card {
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Адаптивность модалок */
+        @media (max-width: 768px) {
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .examples {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+                /* Отзывы */
+        .reviews {
+            background: var(--dark);
+            position: relative;
+        }
+
+        .reviews-empty {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--dark-light);
+            border: 2px dashed rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+        }
+
+        .empty-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: var(--primary);
+        }
+
+        .reviews-empty h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .reviews-empty > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .empty-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .empty-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .empty-feature svg {
+            flex-shrink: 0;
+        }
+
+        .be-first {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .be-first p {
+            margin-bottom: 0.5rem;
+        }
+
+        .be-first-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Превью системы (для будущего) */
+        .reviews-system-preview {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .system-card {
+            background: var(--dark-light);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .system-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-card > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .system-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .sys-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+        }
+
+        .sys-num {
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+                /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+        @media (max-width: 768px) {
+            * {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
+            }
+
+            body {
+                font-size: 16px;
+                padding-bottom: 80px;
+            }
+
+            /* Навигация */
+            nav {
+                padding: 0.75rem 5%;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1rem 1.5rem;
+                gap: 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 1.1rem;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                display: block;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+                width: 44px;
+                height: 44px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+                font-size: 1.5rem;
+                transition: background 0.3s;
+            }
+
+            .mobile-menu:active {
+                background: rgba(255,255,255,0.1);
+            }
+
+            /* Hero */
+            .hero {
+                min-height: auto;
+                padding: 100px 5% 50px;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+                line-height: 1.2;
+                word-wrap: break-word;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+                padding: 1rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .hero-stats {
+                flex-direction: row;
+                gap: 0.75rem;
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .stat {
+                flex: 1;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            /* Секции */
+            section {
+                padding: 2.5rem 5%;
+            }
+
+            .section-header {
+                margin-bottom: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .section-header p {
+                font-size: 0.9rem;
+            }
+
+            /* Карточки услуг */
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .service-card {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            .service-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+            }
+
+            .service-icon svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .service-card h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .service-card p {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .service-features {
+                margin-top: 1rem;
+            }
+
+            .service-features li {
+                font-size: 0.85rem;
+                padding: 0.35rem 0;
+                padding-left: 1.5rem;
+                position: relative;
+                line-height: 1.5;
+            }
+
+            /* Почему мы */
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .feature-item {
+                padding: 1rem 0.5rem;
+            }
+
+            .feature-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 1rem;
+            }
+
+            .feature-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .feature-item h3 {
+                font-size: 0.85rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .feature-item p {
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+
+            /* CTA */
+            .cta {
+                padding: 3rem 5%;
+            }
+
+            .cta h2 {
+                font-size: 1.4rem;
+            }
+
+            .cta p {
+                font-size: 0.9rem;
+            }
+
+            /* Контакты — мобильная версия */
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0 0.5rem; /* небольшой отступ по бокам */
+            }
+            
+            .contact-item {
+                padding: 1.25rem;
+                display: flex;
+                align-items: flex-start;
+                text-align: left;
+                gap: 1rem;
+                background: rgba(255,255,255,0.03);
+                border-radius: 14px;
+                border: 1px solid rgba(255,255,255,0.05);
+                width: 100%; /* гарантируем что карточка не шире контейнера */
+                box-sizing: border-box; /* учитываем padding в ширине */
+                overflow: hidden; /* предотвращаем вылезание содержимого */
+            }
+
+            .contact-item > div:last-child {
+                min-width: 0; /* критически важно для flex-контейнера */
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                word-break: break-word; /* перенос длинных слов/ссылок */
+                flex: 1; /* занимает всё доступное пространство */
+            }
+            
+            .contact-icon {
+                margin: 0;
+                width: 44px;
+                height: 44px;
+                flex-shrink: 0; /* иконка не сжимается */
+            }
+            
+            .contact-icon svg {
+                width: 22px;
+                height: 22px;
+            }
+            
+            .contact-item h3 {
+                margin-bottom: 0.2rem;
+                font-size: 1rem;
+                white-space: normal; /* разрешаем перенос заголовка */
+            }
+            
+            .contact-item p {
+                font-size: 0.85rem;
+                margin: 0;
+                line-height: 1.5;
+            }
+            
+            .contact-item a {
+                word-break: break-all; /* принудительный перенос длинных ссылок */
+                display: inline-block; /* чтобы перенос работал корректно */
+                max-width: 100%;
+            }
+
+            /* Отзывы */
+            .reviews-empty {
+                padding: 2rem 1.25rem;
+            }
+
+            .empty-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 1.5rem;
+            }
+
+            .empty-icon svg {
+                width: 30px;
+                height: 30px;
+            }
+
+            .reviews-empty h3 {
+                font-size: 1.15rem;
+            }
+
+            .reviews-empty > p {
+                font-size: 0.85rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .empty-features {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .empty-feature {
+                font-size: 0.8rem;
+            }
+
+            .be-first {
+                padding-top: 1.5rem;
+            }
+
+            .be-first-desc {
+                font-size: 0.8rem;
+            }
+
+            /* Модальные окна */
+            .modal {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 16px;
+                top: 50%;
+            }
+
+            .modal-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-header h3 {
+                font-size: 1.15rem;
+            }
+
+            .modal-close {
+                width: 36px;
+                height: 36px;
+                font-size: 1.5rem;
+            }
+
+            .modal-body {
+                padding: 1.25rem;
+            }
+
+            .modal-section {
+                margin-bottom: 1.5rem;
+            }
+
+            .modal-section h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .modal-section p {
+                font-size: 0.85rem;
+            }
+
+            .steps {
+                gap: 0.75rem;
+            }
+
+            .step {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .step-num {
+                width: 24px;
+                height: 24px;
+                font-size: 0.75rem;
+            }
+
+            .examples {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .example-card {
+                padding: 1rem;
+            }
+
+            .example-img {
+                height: 90px;
+                margin-bottom: 0.75rem;
+            }
+
+            .example-card p {
+                font-size: 0.85rem;
+            }
+
+            .example-desc {
+                font-size: 0.8rem;
+            }
+
+            .price-tag {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .price-note {
+                font-size: 0.8rem;
+            }
+
+            .modal-footer {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-footer .btn {
+                padding: 0.875rem;
+                font-size: 0.9rem;
+            }
+
+            /* Липкая панель */
+            .mobile-sticky-bar {
+                padding: 0.625rem;
+            }
+
+            .sticky-btn {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+                border-radius: 10px;
+            }
+
+            /* Футер */
+            footer {
+                padding: 2rem 5% 2.5rem;
+            }
+
+            .footer-logo {
+                font-size: 1.2rem;
+            }
+
+            footer p {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Очень маленькие экраны */
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+                /* Липкая панель для мобильных */
+                /* Умная липкая панель — появляется после середины страницы */
+        .mobile-sticky-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 0.75rem 1rem;
+            z-index: 1500;
+            gap: 0.75rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-sticky-bar.visible {
+            transform: translateY(0);
+        }
+
+        .sticky-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .sticky-call {
+            background: var(--gradient-1);
+            color: var(--white);
+        }
+
+        .sticky-whatsapp {
+            background: #25d366;
+            color: var(--white);
+        }
+
+        .sticky-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sticky-bar {
+                display: flex;
+            }
+
+            body {
+                padding-bottom: 0;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-sticky-bar {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .contact-item {
+                display: grid;
+                grid-template-columns: 44px 1fr;
+                grid-template-areas:
+                    "icon title"
+                    "icon text1"
+                    "icon text2";
+                align-items: start;
+                gap: 0.4rem 1rem;
+            }
+        
+            .contact-icon {
+                grid-area: icon;
+            }
+        
+            .contact-item h3 {
+                grid-area: title;
+                margin: 0;
+            }
+        
+            .contact-item p:nth-of-type(1) {
+                grid-area: text1;
+                margin: 0;
+            }
+        
+            .contact-item p:nth-of-type(2) {
+                grid-area: text2;
+                margin: 0;
+            }
+        
+            .contact-item p,
+            .contact-item a {
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+        * {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body {
+            padding-bottom: calc(70px + env(safe-area-inset-bottom));
+        }
+        .hero-video {
+            width: 45%;
+            max-width: 600px;
+        }
+        
+        .hero-video video {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            filter: brightness(0.8) contrast(1.1);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-video {
+            width: 50%;
+            max-width: 700px;
+            position: relative;
+        }
+        .hero-video video.loaded {
+            opacity: 1;
+        }
+        .hero-video::before {
+            content: "";
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle, rgba(0,150,255,0.15), transparent 70%);
+            z-index: -1;
+        }
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            position: absolute;
+            right: -100px;
+            top: 0;
+            width: 60%;
+            height: 100%;
+            opacity: 0.7;
+        }
+        /* главный магический эффект */
+        .hero-video::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to left,
+                rgba(10,10,10,0.9) 0%,
+                rgba(10,10,10,0.6) 30%,
+                rgba(10,10,10,0.2) 60%,
+                transparent 100%
+            );
+        }
+        
+        /* скрываем на телефоне */
+        @media (max-width: 768px) {
+            .hero-video {
+                display: none;
+            }
+        }
+        @media (max-width: 1024px), (pointer: coarse) {
+        .hero {
+                flex-direction: column;
+            }
+        
+            .hero-video {
+                display: none !important;
+            }
+        }
+        .mobile-force .hero {
+            flex-direction: column;
+        }
+        
+        .mobile-force .hero-video {
+            display: none !important;
+        }
+        
+        .hero-video video.loaded {
+            opacity: 1;
+        }
+        @media (pointer: coarse) {
+            .hero {
+                flex-direction: column !important;
+            }
+        
+            .hero-video {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --dark: #1a2436;        /* было #0f172a — делаем светлее */
+                --dark-light: #273449;  /* было #1e293b */
+                --gray: #94a3b8;        /* текст чуть светлее */
+            }
+        
+            body {
+                background: var(--dark);
+            }
+        
+            /* Карточки и блоки — чуть светлее */
+            .service-card,
+            .contact-item,
+            .reviews-empty,
+            .system-card {
+                background: #243044;
+            }
+        
+            /* Навбар */
+            nav {
+                background: rgba(26, 36, 54, 0.95);
+            }
+        
+            /* Мобильное меню */
+            .nav-links {
+                background: rgba(26, 36, 54, 0.98);
+            }
+        
+            /* Липкая панель */
+            .mobile-sticky-bar {
+                background: rgba(26, 36, 54, 0.95);
+            }
+        
+            /* Немного осветлим вторичные тексты */
+            .hero p,
+            .section-header p,
+            .service-card p,
+            .feature-item p,
+            .contact-item p {
+                color: #aab8cc;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(180deg, #1a2436 0%, #0f172a 100%);
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h2>Оставить отзыв</h2>
+    <!-- Навигация -->
+    <nav>
+        <div class="logo">IoT-TiPair</div>
+        <ul class="nav-links">
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#why-us">Почему мы</a></li>
+            <li><a href="#reviews">Отзывы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+        <div class="mobile-menu">☰</div>
+    </nav>
 
-<input id="name" placeholder="Ваше имя"><br><br>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge animate delay-1"> Работаем по всему Приднестровью</div>
+            <h1 class="animate delay-2">Умные системы для <span>дома и бизнеса</span></h1>
+            <p class="animate delay-3">Видеонаблюдение, умный дом, автоматизация теплиц и полива. Установка под ключ в Тирасполе и по всему ПМР. Управляй всем со смартфона — где бы ты ни был.</p>
+            <div class="hero-buttons animate delay-4">
+                <a href="#contact" class="btn btn-primary">Бесплатная консультация</a>
+                <a href="#services" class="btn btn-secondary">Смотреть услуги</a>
+            </div>
+            <div class="hero-stats animate delay-4">
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Мониторинг</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Под ключ</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">0Р</div>
+                    <div class="stat-label">Выезд на замер</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-video">
+            <video autoplay muted loop playsinline preload="none" poster="preview.jpg">
+                <source data-src="video.webm" type="video/webm">
+                <source data-src="video.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
 
-<select id="rating">
-  <option value="5">5 ⭐</option>
-  <option value="4">4 ⭐</option>
-  <option value="3">3 ⭐</option>
-</select><br><br>
+    <!-- Услуги -->
+    <section class="services" id="services">
+        <div class="section-header scroll-reveal">
+            <h2>Наши <span>услуги</span></h2>
+            <p>От простого видеонаблюдения до сложных систем автоматизации — делаем всё, чтобы ваш дом и бизнес работали для вашего комфорта.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                <h3>Видеонаблюдение</h3>
+                <p>IP-камеры с ночным видением, распознаванием лиц. Просмотр с телефона из любой точки мира. Подберем камеры под любые задачи.</p>
+                <ul class="service-features">
+                    <li>Установка в кратчайшие сроки</li>
+                    <li>Облачная запись</li>
+                    <li>Оповещения на телефон</li>
+                    <li>Работа на питании (PoE)</li>
+                </ul>
+            </div>
 
-<textarea id="text" placeholder="Ваш отзыв"></textarea><br><br>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/><path d="M13 2L3 9" stroke-opacity="0.3"/></svg></div>
+                <h3>Умный дом</h3>
+                <p>Управление светом, отоплением, замками и шторами со смартфона. Сценарии «Я дома», «Режим отпуска». Управление всеми функциями с одного приложения.</p>
+                <ul class="service-features">
+                    <li>Голосовое управление</li>
+                    <li>Экономия до 30% энергии</li>
+                    <li>Интеграция с Алисой/Google</li>
+                    <li>Удалённый доступ</li>
+                </ul>
+            </div>
 
-<button onclick="sendReview()">Отправить</button>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/><path d="M12 6v12"/><path d="M8 10c1.5-1 2.5-1 4 0s2.5 1 4 0"/><path d="M8 14c1.5 1 2.5 1 4 0s2.5-1 4 0"/></svg></div>
+                <h3>Агро-IoT</h3>
+                <p>Датчики температуры, влажности почвы и воздуха для теплиц. Автоматический полив и вентиляция.</p>
+                <ul class="service-features">
+                    <li>Мониторинг 24/7</li>
+                    <li>Автополив по расписанию</li>
+                    <li>Уведомления о проблемах</li>
+                    <li>Снижение расхода воды</li>
+                </ul>
+            </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, addDoc, collection, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 18a4 4 0 0 0 0-8" stroke-dasharray="2 2"/></svg></div>
+                <h3>Ирригация</h3>
+                <p>Дистанционное управление дождевальными машинами и насосами. Контроль расхода воды и графики полива. Настроим под интересы каждого.</p>
+                <ul class="service-features">
+                    <li>Запуск с телефона</li>
+                    <li>Полив по расписанию</li>
+                    <li>Контроль расхода воды</li>
+                    <li>Любые функции мониторинга</li>
+                </ul>
+            </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDgZGZa5IDmaQmh4m2zNBHwTMIJKowCz9Y",
-  authDomain: "base-tipair.firebaseapp.com",
-  projectId: "base-tipair",
-};
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6" y2="6"/><line x1="6" y1="18" x2="6" y2="18"/><path d="M14 10V6"/><path d="M14 18v-4"/><circle cx="18" cy="6" r="1"/><circle cx="18" cy="18" r="1"/></svg></div>
+                <h3>Промышленный мониторинг</h3>
+                <p>Контроль температуры на складах, утечек газа и воды, энергопотребления. Системы безопасности.</p>
+                <ul class="service-features">
+                    <li>Датчики утечек</li>
+                    <li>Контроль энергии</li>
+                    <li>СМС-оповещения</li>
+                    <li>Архив данных</li>
+                </ul>
+            </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+                <h3>Обслуживание</h3>
+                <p>Гарантийное и постгарантийное обслуживание всех установленных систем. Выезд в кратчайшие сроки.</p>
+                <ul class="service-features">
+                    <li>Гарантия 2 года</li>
+                    <li>Выезд в кратчайшие сроки</li>
+                    <li>Замена оборудования</li>
+                    <li>Удалённая диагностика</li>
+                </ul>
+            </div>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                <h3>Создание сайтов</h3>
+                <p>Современные сайты-визитки, лендинги и корпоративные порталы. Адаптивный дизайн, быстрая загрузка, SEO-оптимизация. От идеи до запуска под ключ.</p>
+                <ul class="service-features">
+                    <li>Адаптивный дизайн под все устройства</li>
+                    <li>SEO-оптимизация и быстрая загрузка</li>
+                    <li>Панель управления контентом</li>
+                    <li>Подключение аналитики и форм заявок</li>
+                </ul>
+            </div>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3>Мобильные приложения</h3>
+                <p>Нативные и кроссплатформенные приложения для iOS и Android. Управление умным домом, агро-мониторинг, корпоративные решения под ваш бизнес.</p>
+                <ul class="service-features">
+                    <li>iOS и Android из одного кода</li>
+                    <li>Push-уведомления и офлайн-режим</li>
+                    <li>Интеграция с IoT-устройствами</li>
+                    <li>Публикация в App Store и Google Play</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-// Получаем токен из ссылки
-const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
+    <!-- Почему мы -->
+    <section id="why-us">
+        <div class="section-header scroll-reveal">
+            <h2>Почему <span>выбирают нас</span></h2>
+            <p>Мы не просто продаём оборудование — мы создаём работающие решения под ваши задачи</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item scroll-reveal">
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></div>
+                <h3>Индивидуальный подход</h3>
+                <p>Подбираем оборудование и прошивки под ваш бюджет и задачи, без переплаты за ненужные функции. Реализуем любые желания в вашем приложении</p>
+            </div>
+            <div class="feature-item scroll-reveal">
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <h3>Быстрый монтаж</h3>
+                <p>Среднее время установки — от 1 до 2 дней в зависимости от сложности</p>
+            </div>
+            <div class="feature-item scroll-reveal">
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3>Удалённый доступ</h3>
+                <p>Настраиваем доступ с телефона до того, как уедем. Показываем и прописываем инструкцию пользования</p>
+            </div>
+            <div class="feature-item scroll-reveal">
+                <div class="feature-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+                <h3>Гарантия и поддержка</h3>
+                <p>2 года гарантии на работы и оборудование. Отвечаем на звонки даже в выходные</p>
+            </div>
+        </div>
+    </section>
+            <!-- Отзывы -->
+    <section class="reviews" id="reviews">
+        <div class="section-header scroll-reveal">
+            <h2>Отзывы <span>клиентов</span></h2>
+            <p>Мы только начинаем свой путь, но уже гордимся каждым довольным клиентом</p>
+        </div>
+        
+        <div class="reviews-empty scroll-reveal">
+            <div class="empty-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+            </div>
+            <h3>Пока отзывов нет</h3>
+            <p>Мы недавно начали работу, но уже выполнили несколько проектов.<br>Скоро здесь появятся реальные отзывы наших клиентов.</p>
+            <div class="empty-features">
+                <div class="empty-feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Только реальные клиенты</span>
+                </div>
+                <div class="empty-feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>С проверкой через заказ</span>
+                </div>
+            </div>
+            <div class="be-first">
+                <p><strong>Хотите стать первым?</strong></p>
+                <p class="be-first-desc">Закажите любую услугу, и после выполнения мы пришлём вам персональную ссылку для оставления отзыва.</p>
+                <a href="#contact" class="btn btn-primary">Оставить заявку</a>
+            </div>
+        </div>
 
-async function sendReview() {
-  if (!token) {
-    alert("Ссылка недействительна");
-    return;
-  }
+        <!-- Заглушка будущей системы отзывов (пока скрыта) -->
+        <div class="reviews-system-preview scroll-reveal" style="display: none;">
+            <div class="system-card">
+                <div class="system-icon">🔐</div>
+                <h4>Защищённая система отзывов</h4>
+                <p>Отзывы оставляются только по одноразовым ссылкам, которые мы отправляем реальным клиентам после выполнения работ.</p>
+                <div class="system-steps">
+                    <div class="sys-step">
+                        <span class="sys-num">1</span>
+                        <span>Вы выполняете заказ</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">2</span>
+                        <span>Мы отправляем ссылку на email</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">3</span>
+                        <span>Клиент ставит оценку и пишет текст</span>
+                    </div>
+                    <div class="sys-step">
+                        <span class="sys-num">4</span>
+                        <span>Отзыв автоматически появляется на сайте</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  const name = document.getElementById("name").value;
-  const text = document.getElementById("text").value;
-  const rating = document.getElementById("rating").value;
+    <!-- CTA -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Готовы автоматизировать свой дом или бизнес?</h2>
+            <p>Позвоните или напишите нам — бесплатно проконсультируем, рассчитаем стоимость и выедем на замер</p>
+            <a href="#contact" class="btn btn-white">Получить консультацию</a>
+        </div>
+    </section>
 
-  const tokenRef = doc(db, "tokens", token);
-  const tokenSnap = await getDoc(tokenRef);
+    <!-- Контакты -->
+    <section class="contact" id="contact">
+        <div class="section-header scroll-reveal">
+            <h2>Наши <span>контакты</span></h2>
+            <p>Свяжитесь с нами удобным способом</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item scroll-reveal">
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                <h3>Телефон</h3>
+                <p><a href="tel:+37377718802">+373 777 18 802</a></p>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ежедневно с 8:00 до 20:00</p>
+            </div>
+            <div class="contact-item scroll-reveal">
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="8" y1="12" x2="8.01" y2="12"/><line x1="12" y1="12" x2="12.01" y2="12"/><line x1="16" y1="12" x2="16.01" y2="12"/></svg></div>
+                <h3>WhatsApp / Telegram</h3>
+                <p><a href="https://wa.me/37377718802">Написать в WhatsApp</a></p>
+                <p><a href="https://t.me/likonsil4">Написать в Telegram</a></p>
+            </div>
+            <div class="contact-item scroll-reveal">
+                <div class="contact-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                <h3>Адрес</h3>
+                <p>г. Тирасполь, Приднестровье</p>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Выезд по всему ПМР</p>
+            </div>
+        </div>
+    </section>
 
-      if (!tokenSnap.exists()) {
-        alert("Ссылка не найдена");
-        return;
-      }
-      
-      if (tokenSnap.data().used) {
-        alert("Ссылка уже использована");
-        return;
-      }
-      
-      // сохраняем отзыв
-      await addDoc(collection(db, "reviews"), {
-        name,
-        text,
-        rating,
-        token,
-        status: "pending",
-        createdAt: Date.now()
-      });
-      
-      // помечаем токен как использованный
-      await setDoc(tokenRef, { used: true });
-      
-      alert("Отзыв отправлен!");
-}
-</script>
+    <!-- Футер -->
+    <footer>
+        <div class="footer-logo">IoT-TiPair</div>
+        <p>© 2026 IoT-TiPair. Умные системы для дома и бизнеса в Приднестровье.<br>Все права защищены.</p>
+    </footer>
+        <!-- Модальные окна для услуг -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
 
-</body>
+    <!-- Модальное окно 1: Видеонаблюдение -->
+    <div id="modal-1" class="modal">
+        <div class="modal-header">
+            <h3>Видеонаблюдение</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Полный комплект под ключ: от подбора оборудования до настройки удалённого просмотра на вашем телефоне. Установка системы где угодно, даже в поле. Работаем с проверенными брендами: Hikvision, Dahua, Ezviz, TP-Link и др.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Бесплатный выезд и замер</div>
+                    <div class="step"><span class="step-num">2</span> Подбор оптимального комплекта</div>
+                    <div class="step"><span class="step-num">3</span> Монтаж и прокладка кабелей</div>
+                    <div class="step"><span class="step-num">4</span> Настройка и обучение</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #0ea5e9);"></div>
+                        
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #10b981);"></div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества камер и сложности монтажа. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 2: Умный дом -->
+    <div id="modal-2" class="modal">
+        <div class="modal-header">
+            <h3>Умный дом</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Автоматизация освещения, отопления, климат-контроля, замков и штор. Управление голосом (Алиса, Google) или через приложение. Сценарии: "Я дома", "Ушёл", "Кино", "Отпуск".</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Аудит и проектирование</div>
+                    <div class="step"><span class="step-num">2</span> Подбор устройств (Zigbee, WiFi, Z-Wave)</div>
+                    <div class="step"><span class="step-num">3</span> Установка и интеграция</div>
+                    <div class="step"><span class="step-num">4</span> Настройка сценариев</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f59e0b);"></div>
+                        
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #ec4899);"></div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 3: Агро-IoT -->
+    <div id="modal-3" class="modal">
+        <div class="modal-header">
+            <h3>Агро-IoT</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Датчики температуры, влажности почвы и воздуха, CO₂, освещённости. Автоматический полив, вентиляция, отопление теплиц. Уведомления в Telegram или приложение при критических значениях.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Анализ теплицы/поля</div>
+                    <div class="step"><span class="step-num">2</span> Установка датчиков и контроллеров</div>
+                    <div class="step"><span class="step-num">3</span> Настройка автоматики</div>
+                    <div class="step"><span class="step-num">4</span> Обучение и поддержка</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #22c55e);"></div>
+                        
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #84cc16);"></div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 4: Ирригация -->
+    <div id="modal-4" class="modal">
+        <div class="modal-header">
+            <h3>Ирригация</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Дистанционный запуск дождевальных машин, насосов и клапанов. Учёт расхода воды, запуск по расписанию в любых направления. Работа с любого расстояния — управление с телефона.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Обследование машин</div>
+                    <div class="step"><span class="step-num">2</span> Прокладка коммуникаций</div>
+                    <div class="step"><span class="step-num">3</span> Установка контроллеров</div>
+                    <div class="step"><span class="step-num">4</span> Настройка графиков полива</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #06b6d4);"></div>
+                        
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #0ea5e9);"></div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+               <p class="price-note">Цена зависит от количества и сложности работы. Точный расчёт после замера.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 5: Промышленный мониторинг -->
+    <div id="modal-5" class="modal">
+        <div class="modal-header">
+            <h3>Промышленный мониторинг</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Контроль температуры, влажности, утечек газа/воды, энергопотребления. Системы безопасности: датчики дыма, двери, движения, затопления. Централизованный дашборд для руководства.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Аудит объекта</div>
+                    <div class="step"><span class="step-num">2</span> Проектирование системы</div>
+                    <div class="step"><span class="step-num">3</span> Монтаж датчиков и шлюзов</div>
+                    <div class="step"><span class="step-num">4</span> Интеграция и настройка алертов</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #6366f1);"></div>
+                       
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #8b5cf6);"></div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Индивидуальный расчёт под объект любой сложности.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно 6: Обслуживание -->
+    <div id="modal-6" class="modal">
+        <div class="modal-header">
+            <h3>Обслуживание</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <h4>Что входит в услугу</h4>
+                <p>Гарантийное и постгарантийное обслуживание всех установленных систем. Плановые проверки, замена оборудования, обновление ПО. Приоритетный выезд в день обращения.</p>
+            </div>
+            <div class="modal-section">
+                <h4>Этапы работы</h4>
+                <div class="steps">
+                    <div class="step"><span class="step-num">1</span> Заявка по телефону/мессенджеру</div>
+                    <div class="step"><span class="step-num">2</span> Удалённая диагностика</div>
+                    <div class="step"><span class="step-num">3</span> Выезд специалиста в кратчайшие сроки</div>
+                    <div class="step"><span class="step-num">4</span> Ремонт или замена</div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4>Примеры работ</h4>
+                <div class="examples">
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f43f5e);"></div>
+                       
+                    </div>
+                    <div class="example-card">
+                        <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #fb7185);"></div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <p class="price-note">Для клиентов IoT-TiPair — приоритет и скидка 20%.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+        </div>
+    </div>
+
+    <script>
+               // Плавное появление при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#contact' && document.querySelector('.modal.active')) {
+                    closeModal();
+                }
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Модальные окна
+        function openModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            const overlay = document.getElementById('modal-overlay');
+            
+            if (modal && overlay) {
+                overlay.classList.add('active');
+                modal.classList.add('active');
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        function closeModal() {
+            const modals = document.querySelectorAll('.modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            modals.forEach(modal => modal.classList.remove('active'));
+            if (overlay) overlay.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Умная липкая панель — появляется после середины страницы
+        function initStickyBar() {
+            const stickyBar = document.querySelector('.mobile-sticky-bar');
+            if (!stickyBar) return;
+
+            const halfHeight = document.body.scrollHeight / 2;
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY + window.innerHeight;
+                
+                if (currentScroll > halfHeight) {
+                    stickyBar.classList.add('visible');
+                } else {
+                    stickyBar.classList.remove('visible');
+                }
+            });
+        }
+
+        // Добавляем обработчики клика на карточки
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal(index + 1);
+                });
+            });
+
+            // Бургер-меню
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    mobileMenu.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+                });
+
+                // Закрытие меню при клике на ссылку
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        mobileMenu.textContent = '☰';
+                    });
+                });
+
+                // Закрытие меню при скролле
+                window.addEventListener('scroll', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenu.textContent = '☰';
+                    }
+                });
+
+                // Закрытие меню при клике вне
+                document.addEventListener('click', (e) => {
+                    if (!navLinks.contains(e.target) && !mobileMenu.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                        mobileMenu.textContent = '☰';
+                    }
+                });
+            }
+
+            // Инициализация умной панели
+            initStickyBar();
+        });
+    </script>
+
+    <!-- Липкая панель для мобильных -->
+    <div class="mobile-sticky-bar">
+        <a href="tel:+37377718802" class="sticky-btn sticky-call">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Позвонить</span>
+        </a>
+        <a href="https://wa.me/37377718802" class="sticky-btn sticky-whatsapp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="8" y1="12" x2="8.01" y2="12"/><line x1="12" y1="12" x2="12.01" y2="12"/><line x1="16" y1="12" x2="16.01" y2="12"/></svg>
+            <span>WhatsApp</span>
+        </a>
+    </div>
+    <script>
+        /* Запрет правой кнопки мыши */
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        /* Запрет горячих клавиш */
+        document.addEventListener('keydown', function(e) {
+        
+            /* F12 */
+            if (e.key === "F12") {
+                e.preventDefault();
+            }
+        
+            /* Ctrl+Shift+I */
+            if (e.ctrlKey && e.shiftKey && e.key === "I") {
+                e.preventDefault();
+            }
+        
+            /* Ctrl+Shift+J */
+            if (e.ctrlKey && e.shiftKey && e.key === "J") {
+                e.preventDefault();
+            }
+        
+            /* Ctrl+U */
+            if (e.ctrlKey && e.key === "u") {
+                e.preventDefault();
+            }
+        
+            /* Ctrl+C */
+            if (e.ctrlKey && e.key === "c") {
+                e.preventDefault();
+            }
+        
+            /* Ctrl+S */
+            if (e.ctrlKey && e.key === "s") {
+                e.preventDefault();
+            }
+        
+        });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const video = document.querySelector(".hero-video video");
+            
+                if (!video) return;
+            
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const sources = video.querySelectorAll("source");
+
+                            sources.forEach(source => {
+                                const src = source.dataset.src;
+                                if (src) {
+                                    source.src = src;
+                                }
+                            });
+                            
+                            video.load();
+                            video.addEventListener("loadeddata", () => {
+                                video.classList.add("loaded");
+                            });
+                            
+                            video.play().catch(() => {});
+            
+                            obs.unobserve(video); // отключаем наблюдение
+                        }
+                    });
+                }, {
+                    threshold: 0.3
+                });
+            
+                observer.observe(video);
+            });
+        </script>
+        <script>
+            if (window.innerWidth < 1024 || navigator.userAgent.includes("Mobi")) {
+                document.body.classList.add("mobile-force");
+            }
+        </script>
+        <!-- Модальное окно 7: Создание сайтов -->
+        <div id="modal-7" class="modal">
+            <div class="modal-header">
+                <h3>Создание сайтов</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Что входит в услугу</h4>
+                    <p>Разработка сайтов любой сложности: от одностраничных лендингов до многостраничных корпоративных сайтов. Используем современные технологии: HTML5, CSS3, JavaScript, React. Адаптируем под мобильные устройства, оптимизируем для поисковых систем.</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Этапы работы</h4>
+                    <div class="steps">
+                        <div class="step"><span class="step-num">1</span> Обсуждение задач и анализ конкурентов</div>
+                        <div class="step"><span class="step-num">2</span> Прототипирование и дизайн-макет</div>
+                        <div class="step"><span class="step-num">3</span> Вёрстка и программирование</div>
+                        <div class="step"><span class="step-num">4</span> Тестирование и запуск</div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h4>Примеры работ</h4>
+                    <div class="examples">
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #3b82f6);"></div>
+                            
+                        </div>
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #8b5cf6);"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <p class="price-note">Цена зависит от количества страниц и функционала. Точный расчёт после обсуждения задач.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+            </div>
+        </div>
+        
+        <!-- Модальное окно 8: Мобильные приложения -->
+        <div id="modal-8" class="modal">
+            <div class="modal-header">
+                <h3>Мобильные приложения</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Что входит в услугу</h4>
+                    <p>Разработка мобильных приложений для бизнеса и IoT-управления. Кроссплатформенная разработка на React Native и Flutter — одно приложение работает на iOS и Android. Интеграция с вашими устройствами, облачными сервисами и платёжными системами.</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Этапы работы</h4>
+                    <div class="steps">
+                        <div class="step"><span class="step-num">1</span> Прототипирование интерфейса</div>
+                        <div class="step"><span class="step-num">2</span> Разработка backend и API</div>
+                        <div class="step"><span class="step-num">3</span> Программирование приложения</div>
+                        <div class="step"><span class="step-num">4</span> Тестирование и публикация</div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h4>Примеры работ</h4>
+                    <div class="examples">
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #10b981);"></div>
+                            
+                        </div>
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f59e0b);"></div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <p class="price-note">Цена зависит от функционала и платформ. Точный расчёт после составления ТЗ.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+            </div>
+        </div>
+    </body>
 </html>
