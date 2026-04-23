@@ -1771,6 +1771,28 @@
                     <li>Удалённая диагностика</li>
                 </ul>
             </div>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                <h3>Создание сайтов</h3>
+                <p>Современные сайты-визитки, лендинги и корпоративные порталы. Адаптивный дизайн, быстрая загрузка, SEO-оптимизация. От идеи до запуска под ключ.</p>
+                <ul class="service-features">
+                    <li>Адаптивный дизайн под все устройства</li>
+                    <li>SEO-оптимизация и быстрая загрузка</li>
+                    <li>Панель управления контентом</li>
+                    <li>Подключение аналитики и форм заявок</li>
+                </ul>
+            </div>
+            <div class="service-card scroll-reveal">
+                <div class="service-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3>Мобильные приложения</h3>
+                <p>Нативные и кроссплатформенные приложения для iOS и Android. Управление умным домом, агро-мониторинг, корпоративные решения под ваш бизнес.</p>
+                <ul class="service-features">
+                    <li>iOS и Android из одного кода</li>
+                    <li>Push-уведомления и офлайн-режим</li>
+                    <li>Интеграция с IoT-устройствами</li>
+                    <li>Публикация в App Store и Google Play</li>
+                </ul>
+            </div>
         </div>
     </section>
 
@@ -2394,5 +2416,92 @@
                 document.body.classList.add("mobile-force");
             }
         </script>
+        <!-- Модальное окно 7: Создание сайтов -->
+        <div id="modal-7" class="modal">
+            <div class="modal-header">
+                <h3>Создание сайтов</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Что входит в услугу</h4>
+                    <p>Разработка сайтов любой сложности: от одностраничных лендингов до многостраничных корпоративных сайтов. Используем современные технологии: HTML5, CSS3, JavaScript, React. Адаптируем под мобильные устройства, оптимизируем для поисковых систем.</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Этапы работы</h4>
+                    <div class="steps">
+                        <div class="step"><span class="step-num">1</span> Обсуждение задач и анализ конкурентов</div>
+                        <div class="step"><span class="step-num">2</span> Прототипирование и дизайн-макет</div>
+                        <div class="step"><span class="step-num">3</span> Вёрстка и программирование</div>
+                        <div class="step"><span class="step-num">4</span> Тестирование и запуск</div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h4>Примеры работ</h4>
+                    <div class="examples">
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #3b82f6);"></div>
+                            <p><strong>Сайт-визитка, Тирасполь</strong></p>
+                            <p class="example-desc">Лендинг для строительной компании. 5 экранов, форма заявки, анимации. Срок — 5 дней.</p>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #8b5cf6);"></div>
+                            <p><strong>Интернет-магазин, Бендеры</strong></p>
+                            <p class="example-desc">Каталог товаров, корзина, оплата онлайн. Интеграция с 1С. 50+ товаров.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <p class="price-note">Цена зависит от количества страниц и функционала. Точный расчёт после обсуждения задач.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+            </div>
+        </div>
+        
+        <!-- Модальное окно 8: Мобильные приложения -->
+        <div id="modal-8" class="modal">
+            <div class="modal-header">
+                <h3>Мобильные приложения</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Что входит в услугу</h4>
+                    <p>Разработка мобильных приложений для бизнеса и IoT-управления. Кроссплатформенная разработка на React Native и Flutter — одно приложение работает на iOS и Android. Интеграция с вашими устройствами, облачными сервисами и платёжными системами.</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Этапы работы</h4>
+                    <div class="steps">
+                        <div class="step"><span class="step-num">1</span> Прототипирование интерфейса</div>
+                        <div class="step"><span class="step-num">2</span> Разработка backend и API</div>
+                        <div class="step"><span class="step-num">3</span> Программирование приложения</div>
+                        <div class="step"><span class="step-num">4</span> Тестирование и публикация</div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h4>Примеры работ</h4>
+                    <div class="examples">
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #10b981);"></div>
+                            <p><strong>Приложение для агрофермы, Григориополь</strong></p>
+                            <p class="example-desc">Мониторинг теплиц в реальном времени. Графики, уведомления, удалённое управление поливом.</p>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-img" style="background: linear-gradient(135deg, #1e293b, #f59e0b);"></div>
+                            <p><strong>Корпоративное приложение, Тирасполь</strong></p>
+                            <p class="example-desc">Учёт заявок, чат с клиентами, статистика. 50+ сотрудников в системе.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <p class="price-note">Цена зависит от функционала и платформ. Точный расчёт после составления ТЗ.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#contact" class="btn btn-primary" onclick="closeModal()">Заказать консультацию</a>
+            </div>
+        </div>
     </body>
 </html>
