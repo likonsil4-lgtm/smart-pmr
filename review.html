@@ -10,6 +10,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 body {
@@ -33,6 +35,12 @@ body {
   height: 100%;
   z-index: -2;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.video-bg.loaded {
+  opacity: 1;
 }
 
 /* Тёмный оверлей для лучшей читаемости */
@@ -44,6 +52,12 @@ body {
   height: 100%;
   background: rgba(15, 23, 42, 0.65);
   z-index: -1;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.overlay.loaded {
+  opacity: 1;
 }
 
 /* Анимированные частицы на CSS */
@@ -286,7 +300,7 @@ button:active {
     padding: 28px 20px;
     border-radius: 20px;
   }
-  
+
   h2 {
     font-size: 24px;
   }
@@ -311,6 +325,11 @@ button:active {
   transition: all 0.2s ease;
   color: #334155;
   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .star:hover, .star.active {
@@ -345,16 +364,17 @@ body {
   -webkit-touch-callout: none;
 }
 </style>
+<base target="_blank">
 </head>
 <body>
 
 <!-- Видео-фон -->
-<video class="video-bg" autoplay muted loop playsinline>
+<video class="video-bg" id="videoBg" autoplay muted loop playsinline>
   <source src="https://cdn.pixabay.com/video/2025/10/23/311617_large.mp4" type="video/mp4">
 </video>
 
 <!-- Тёмный оверлей -->
-<div class="overlay"></div>
+<div class="overlay" id="overlay"></div>
 
 <!-- CSS-частицы -->
 <div class="particles" id="particles"></div>
@@ -392,6 +412,25 @@ const db = getFirestore(app);
 
 const token = new URLSearchParams(window.location.search).get("token");
 const appDiv = document.getElementById("app");
+
+// Плавное появление фона
+const videoBg = document.getElementById('videoBg');
+const overlay = document.getElementById('overlay');
+
+function fadeInBackground() {
+  videoBg.classList.add('loaded');
+  overlay.classList.add('loaded');
+}
+
+// Ждём загрузки видео
+if (videoBg.readyState >= 3) {
+  fadeInBackground();
+} else {
+  videoBg.addEventListener('loadeddata', fadeInBackground);
+  videoBg.addEventListener('canplay', fadeInBackground);
+  // Fallback: если видео не загрузится за 3 секунды, показываем фон
+  setTimeout(fadeInBackground, 3000);
+}
 
 // Создаём CSS-частицы
 function createParticles() {
@@ -441,12 +480,12 @@ if (!token) {
     appDiv.innerHTML = `
       <h2>Оставить отзыв</h2>
       <p class="subtitle">Ваше мнение важно для нас</p>
-      
+
       <div class="form-group">
         <label for="name">Ваше имя</label>
         <input id="name" placeholder="Как вас зовут?" autocomplete="name">
       </div>
-      
+
       <div class="form-group">
         <label>Оценка</label>
         <div class="star-rating" id="starRating">
@@ -464,12 +503,12 @@ if (!token) {
           <option value="1">⭐</option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label for="text">Ваш отзыв</label>
         <textarea id="text" rows="5" placeholder="Расскажите о вашем опыте..."></textarea>
       </div>
-      
+
       <button id="send">
         Отправить отзыв
       </button>
@@ -479,7 +518,7 @@ if (!token) {
     let selectedRating = 5;
     const stars = document.querySelectorAll('.star');
     const ratingSelect = document.getElementById('rating');
-    
+
     function updateStars(value) {
       stars.forEach((star, index) => {
         if (index < value) {
@@ -497,37 +536,37 @@ if (!token) {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+Shift+I / Cmd+Option+I
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+Shift+J / Cmd+Option+J
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+Shift+C / Cmd+Option+C
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+U (просмотр исходного кода)
       if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+S (сохранение страницы)
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         return false;
       }
-      
+
       // Ctrl+P (печать)
       if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
@@ -552,11 +591,11 @@ if (!token) {
         // window.location.href = 'about:blank';
       }
     };
-    
+
     setInterval(() => {
       const widthThreshold = window.outerWidth - window.innerWidth > devtools.threshold;
       const heightThreshold = window.outerHeight - window.innerHeight > devtools.threshold;
-      
+
       if (widthThreshold || heightThreshold) {
         if (!devtools.open) {
           devtools.open = true;
@@ -573,37 +612,37 @@ if (!token) {
     console.error = () => {};
     console.info = () => {};
     console.debug = () => {};
-    
+
     // Предупреждение для любопытных
     setTimeout(() => {
       console.log('%c ', 'font-size: 1px; padding: 100px; background: url(https://example.com) no-repeat;');
       console.log('%c⚠️ Внимание!', 'color: red; font-size: 24px; font-weight: bold;');
       console.log('%cЭтот сайт защищён. Несанкционированный доступ запрещён.', 'font-size: 14px;');
     }, 1000);
-    
+
     stars.forEach((star, index) => {
       star.addEventListener('click', () => {
         selectedRating = index + 1;
         ratingSelect.value = selectedRating;
         updateStars(selectedRating);
       });
-      
+
       star.addEventListener('mouseenter', () => {
         updateStars(index + 1);
       });
     });
-    
+
     document.getElementById('starRating').addEventListener('mouseleave', () => {
       updateStars(selectedRating);
     });
-    
+
     updateStars(5);
 
     document.getElementById("send").onclick = async () => {
       const btn = document.getElementById("send");
       const name = document.getElementById("name").value.trim();
       const text = document.getElementById("text").value.trim();
-      
+
       if (!name || !text) {
         btn.innerHTML = "Заполните все поля!";
         btn.style.background = "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)";
@@ -613,10 +652,10 @@ if (!token) {
         }, 2000);
         return;
       }
-      
+
       btn.innerHTML = 'Отправка... <span class="loader"></span>';
       btn.disabled = true;
-      
+
       try {
         await addDoc(collection(db, "reviews"), {
           name,
