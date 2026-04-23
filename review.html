@@ -4,146 +4,535 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Оставить отзыв</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-padding:20px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.box{
-background:#1e293b;
-padding:30px;
-border-radius:20px;
-max-width:500px;
-width:100%;
+
+body {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  color: #e2e8f0;
 }
-input,textarea,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:15px;
-border:none;
-border-radius:10px;
-font-size:16px;
+
+/* Видео-фон */
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  object-fit: cover;
 }
-button{
-width:100%;
-padding:14px;
-background:#0ea5e9;
-color:white;
-border:none;
-border-radius:12px;
-font-size:16px;
-cursor:pointer;
+
+/* Тёмный оверлей для лучшей читаемости */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.65);
+  z-index: -1;
 }
-button:hover{
-background:#0284c7;
+
+/* Анимированные частицы на CSS */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
 }
-h2{
-margin-top:0;
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(14, 165, 233, 0.3);
+  border-radius: 50%;
+  animation: float 15s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Главная карточка */
+.box {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 24px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Декоративный градиентный блик сверху */
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.5), transparent);
+}
+
+/* Заголовок */
+h2 {
+  margin-top: 0;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #e2e8f0 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+
+/* Группы полей */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Поля ввода */
+input, textarea, select {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 15px;
+  color: #f1f5f9;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #64748b;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Стилизация select */
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+select option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+/* Кнопка */
+button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Сообщения об ошибках/успехе */
+.message {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.message h2 {
+  margin-bottom: 16px;
+}
+
+.message-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* Анимация загрузки */
+.loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .box {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
+}
+
+/* Glow эффект для инпутов при фокусе */
+.glow-input:focus {
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
+}
+
+/* Рейтинг звёзд кастомный */
+.star-rating {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+.star {
+  font-size: 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #334155;
+  user-select: none;
+}
+
+.star:hover, .star.active {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  transform: scale(1.1);
+}
+
+/* Скрываем стандартный select для рейтинга, показываем звёзды */
+#rating {
+  display: none;
 }
 </style>
 </head>
 <body>
 
+<!-- Видео-фон -->
+<video class="video-bg" autoplay muted loop playsinline>
+  <source src="https://cdn.pixabay.com/video/2020/05/25/40130-424930032_large.mp4" type="video/mp4">
+</video>
+
+<!-- Тёмный оверлей -->
+<div class="overlay"></div>
+
+<!-- CSS-частицы -->
+<div class="particles" id="particles"></div>
+
 <div class="box" id="app">
-Загрузка...
+  <div style="text-align:center; padding:40px;">
+    <div class="loader" style="width:40px; height:40px; margin:0 auto 20px; display:block;"></div>
+    <p style="color:#94a3b8;">Загрузка...</p>
+  </div>
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 import {
-getFirestore,
-doc,
-getDoc,
-updateDoc,
-addDoc,
-collection
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  addDoc,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyD2UPZ6HZcUMrjTvFfGRJUvF2eo_nxo6yg",
-authDomain: "base-tipair-9de03.firebaseapp.com",
-projectId: "base-tipair-9de03",
-storageBucket: "base-tipair-9de03.firebasestorage.app",
-messagingSenderId: "1038757011708",
-appId: "1:1038757011708:web:142b4170779e7f02453779"
+  apiKey: "AIzaSyD2UPZ6HZcUMrjTvFfGRJUvF2eo_nxo6yg",
+  authDomain: "base-tipair-9de03.firebaseapp.com",
+  projectId: "base-tipair-9de03",
+  storageBucket: "base-tipair-9de03.firebasestorage.app",
+  messagingSenderId: "1038757011708",
+  appId: "1:1038757011708:web:142b4170779e7f02453779"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const token = new URLSearchParams(window.location.search).get("token");
-
 const appDiv = document.getElementById("app");
 
-if(!token){
-appDiv.innerHTML = "Ссылка неверная";
-}else{
-
-const tokenRef = doc(db,"tokens",token);
-const tokenSnap = await getDoc(tokenRef);
-
-if(!tokenSnap.exists()){
-appDiv.innerHTML = "Токен не найден";
-}else if(tokenSnap.data().used){
-appDiv.innerHTML = "Ссылка уже использована";
-}else{
-
-appDiv.innerHTML = `
-<h2>Оставить отзыв</h2>
-
-<input id="name" placeholder="Ваше имя">
-
-<select id="rating">
-<option value="5">⭐⭐⭐⭐⭐</option>
-<option value="4">⭐⭐⭐⭐</option>
-<option value="3">⭐⭐⭐</option>
-<option value="2">⭐⭐</option>
-<option value="1">⭐</option>
-</select>
-
-<textarea id="text" rows="5" placeholder="Ваш отзыв"></textarea>
-
-<button id="send">Отправить</button>
-`;
-
-document.getElementById("send").onclick = async ()=>{
-
-const name = document.getElementById("name").value;
-const rating = document.getElementById("rating").value;
-const text = document.getElementById("text").value;
-
-await addDoc(collection(db,"reviews"),{
-name,
-rating:Number(rating),
-text,
-approved:false,
-date:new Date().toLocaleDateString()
-});
-
-await updateDoc(tokenRef,{
-used:true
-});
-
-appDiv.innerHTML = "<h2>Спасибо за отзыв!</h2>";
-
-};
-
+// Создаём CSS-частицы
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 15 + 's';
+    p.style.animationDuration = (10 + Math.random() * 10) + 's';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
 }
+createParticles();
 
+if (!token) {
+  appDiv.innerHTML = `
+    <div class="message">
+      <span class="message-icon">⚠️</span>
+      <h2>Ссылка неверная</h2>
+      <p style="color:#94a3b8;">Проверьте, что вы перешли по правильной ссылке</p>
+    </div>
+  `;
+} else {
+  const tokenRef = doc(db, "tokens", token);
+  const tokenSnap = await getDoc(tokenRef);
+
+  if (!tokenSnap.exists()) {
+    appDiv.innerHTML = `
+      <div class="message">
+        <span class="message-icon">🔍</span>
+        <h2>Токен не найден</h2>
+        <p style="color:#94a3b8;">Данная ссылка не существует в системе</p>
+      </div>
+    `;
+  } else if (tokenSnap.data().used) {
+    appDiv.innerHTML = `
+      <div class="message">
+        <span class="message-icon">🔒</span>
+        <h2>Ссылка уже использована</h2>
+        <p style="color:#94a3b8;">Вы уже оставили отзыв по этой ссылке</p>
+      </div>
+    `;
+  } else {
+    appDiv.innerHTML = `
+      <h2>Оставить отзыв</h2>
+      <p class="subtitle">Ваше мнение важно для нас</p>
+      
+      <div class="form-group">
+        <label for="name">Ваше имя</label>
+        <input id="name" placeholder="Иван Иванов" autocomplete="name">
+      </div>
+      
+      <div class="form-group">
+        <label>Оценка</label>
+        <div class="star-rating" id="starRating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+        <select id="rating">
+          <option value="5">⭐⭐⭐⭐⭐</option>
+          <option value="4">⭐⭐⭐⭐</option>
+          <option value="3">⭐⭐⭐</option>
+          <option value="2">⭐⭐</option>
+          <option value="1">⭐</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="text">Ваш отзыв</label>
+        <textarea id="text" rows="5" placeholder="Расскажите о вашем опыте..."></textarea>
+      </div>
+      
+      <button id="send">
+        Отправить отзыв
+      </button>
+    `;
+
+    // Логика звёздного рейтинга
+    let selectedRating = 5;
+    const stars = document.querySelectorAll('.star');
+    const ratingSelect = document.getElementById('rating');
+    
+    function updateStars(value) {
+      stars.forEach((star, index) => {
+        if (index < value) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+    
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        selectedRating = index + 1;
+        ratingSelect.value = selectedRating;
+        updateStars(selectedRating);
+      });
+      
+      star.addEventListener('mouseenter', () => {
+        updateStars(index + 1);
+      });
+    });
+    
+    document.getElementById('starRating').addEventListener('mouseleave', () => {
+      updateStars(selectedRating);
+    });
+    
+    updateStars(5);
+
+    document.getElementById("send").onclick = async () => {
+      const btn = document.getElementById("send");
+      const name = document.getElementById("name").value.trim();
+      const text = document.getElementById("text").value.trim();
+      
+      if (!name || !text) {
+        btn.innerHTML = "Заполните все поля!";
+        btn.style.background = "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)";
+        setTimeout(() => {
+          btn.innerHTML = "Отправить отзыв";
+          btn.style.background = "";
+        }, 2000);
+        return;
+      }
+      
+      btn.innerHTML = 'Отправка... <span class="loader"></span>';
+      btn.disabled = true;
+      
+      try {
+        await addDoc(collection(db, "reviews"), {
+          name,
+          rating: Number(selectedRating),
+          text,
+          approved: false,
+          date: new Date().toLocaleDateString('ru-RU')
+        });
+
+        await updateDoc(tokenRef, {
+          used: true
+        });
+
+        appDiv.innerHTML = `
+          <div class="message">
+            <span class="message-icon">🎉</span>
+            <h2>Спасибо за отзыв!</h2>
+            <p style="color:#94a3b8;">Ваш отзыв отправлен на модерацию и скоро появится на сайте</p>
+          </div>
+        `;
+      } catch (err) {
+        btn.innerHTML = "Ошибка! Попробуйте снова";
+        btn.disabled = false;
+        console.error(err);
+      }
+    };
+  }
 }
-
 </script>
 
 </body>
