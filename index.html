@@ -2319,5 +2319,32 @@
         
         });
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const video = document.querySelector(".hero-video video");
+            
+                if (!video) return;
+            
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const src = video.getAttribute("data-src");
+            
+                            if (src) {
+                                video.src = src;
+                                video.load();
+                                video.play();
+                            }
+            
+                            obs.unobserve(video); // отключаем наблюдение
+                        }
+                    });
+                }, {
+                    threshold: 0.3
+                });
+            
+                observer.observe(video);
+            });
+        </script>
     </body>
 </html>
