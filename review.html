@@ -323,6 +323,27 @@ button:active {
 #rating {
   display: none;
 }
+
+/* Запрет выделения всего */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Разрешить выделение только в полях ввода (иначе нельзя будет печатать) */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Запрет контекстного меню (правый клик) */
+body {
+  -webkit-touch-callout: none;
+}
 </style>
 </head>
 <body>
@@ -468,6 +489,97 @@ if (!token) {
         }
       });
     }
+
+    // Блокировка клавиш DevTools
+    document.addEventListener('keydown', (e) => {
+      // F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+I / Cmd+Option+I
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+J / Cmd+Option+J
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+Shift+C / Cmd+Option+C
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+U (просмотр исходного кода)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+S (сохранение страницы)
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Ctrl+P (печать)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        return false;
+      }
+    }, true);
+
+    // Блокировка правого клика
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    }, true);
+
+
+    // Обнаружение открытия DevTools
+    const devtools = { open: false, threshold: 160 };
+    const emit = () => {
+      if (devtools.open) {
+        // Действие при обнаружении DevTools
+        document.body.innerHTML = '<h1 style="text-align:center;padding:50px;">Доступ запрещён</h1>';
+        // Или перенаправление:
+        // window.location.href = 'about:blank';
+      }
+    };
+    
+    setInterval(() => {
+      const widthThreshold = window.outerWidth - window.innerWidth > devtools.threshold;
+      const heightThreshold = window.outerHeight - window.innerHeight > devtools.threshold;
+      
+      if (widthThreshold || heightThreshold) {
+        if (!devtools.open) {
+          devtools.open = true;
+          emit();
+        }
+      } else {
+        devtools.open = false;
+      }
+    }, 500);
+
+    // Очистка консоли и предупреждение
+    console.log = () => {};
+    console.warn = () => {};
+    console.error = () => {};
+    console.info = () => {};
+    console.debug = () => {};
+    
+    // Предупреждение для любопытных
+    setTimeout(() => {
+      console.log('%c ', 'font-size: 1px; padding: 100px; background: url(https://example.com) no-repeat;');
+      console.log('%c⚠️ Внимание!', 'color: red; font-size: 24px; font-weight: bold;');
+      console.log('%cЭтот сайт защищён. Несанкционированный доступ запрещён.', 'font-size: 14px;');
+    }, 1000);
     
     stars.forEach((star, index) => {
       star.addEventListener('click', () => {
