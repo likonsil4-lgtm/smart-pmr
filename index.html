@@ -1626,6 +1626,23 @@
         .mobile-force .hero-video {
             display: none !important;
         }
+        .hero-video video {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .hero-video video.loaded {
+            opacity: 1;
+        }
+        @media (pointer: coarse) {
+            .hero {
+                flex-direction: column !important;
+            }
+        
+            .hero-video {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2355,6 +2372,9 @@
                             });
                             
                             video.load();
+                            video.addEventListener("loadeddata", () => {
+                                video.classList.add("loaded");
+                            });
                             
                             video.play().catch(() => {});
             
