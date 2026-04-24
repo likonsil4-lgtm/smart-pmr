@@ -1720,6 +1720,15 @@
             box-shadow: 0 10px 25px rgba(14,165,233,0.25);
         }
 
+        #reviews-list {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        #reviews-list.ready {
+            opacity: 1;
+        }
+
         
     </style>
 </head>
@@ -2640,6 +2649,7 @@
             document.addEventListener("DOMContentLoaded", function () {
             
                 const btn = document.getElementById("toggleReviewsBtn");
+                const reviewsList = document.getElementById("reviews-list");
             
                 function getReviews() {
                     return document.querySelectorAll("#reviews-list .service-card");
@@ -2649,11 +2659,7 @@
                     const reviews = getReviews();
             
                     reviews.forEach((card, index) => {
-                        if (index >= 4) {
-                            card.style.display = "none";
-                        } else {
-                            card.style.display = "block";
-                        }
+                        card.style.display = index < 4 ? "block" : "none";
                     });
             
                     btn.textContent = "Показать ещё отзывы";
@@ -2661,9 +2667,7 @@
                 }
             
                 function showAll() {
-                    const reviews = getReviews();
-            
-                    reviews.forEach(card => {
+                    getReviews().forEach(card => {
                         card.style.display = "block";
                     });
             
@@ -2674,16 +2678,21 @@
                 function initReviews() {
                     const reviews = getReviews();
             
-                    if (reviews.length <= 4) {
-                        btn.style.display = "none";
+                    if (reviews.length === 0) {
+                        setTimeout(initReviews, 300);
                         return;
                     }
             
-                    hideExtra();
+                    if (reviews.length <= 4) {
+                        btn.style.display = "none";
+                    } else {
+                        hideExtra();
+                    }
+            
+                    reviewsList.classList.add("ready");
                 }
             
-                // ждём пока Firebase загрузит отзывы
-                setTimeout(initReviews, 1500);
+                initReviews();
             
                 btn.addEventListener("click", function () {
                     if (btn.dataset.open === "true") {
