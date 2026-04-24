@@ -1721,14 +1721,6 @@
         }
 
         #reviews-list {
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        
-        #reviews-list.ready {
-            opacity: 1;
-        }
-        #reviews-list {
             display: none;
         }
 
@@ -2692,7 +2684,7 @@
                         hideExtra();
                     }
             
-                    reviewsList.style.display = "block"; 
+                    reviewsList.style.display = "grid"; 
                 }
             
                 initReviews();
