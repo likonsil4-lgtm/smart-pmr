@@ -1728,6 +1728,9 @@
         #reviews-list.ready {
             opacity: 1;
         }
+        #reviews-list {
+            display: none;
+        }
 
         
     </style>
@@ -2689,7 +2692,7 @@
                         hideExtra();
                     }
             
-                    reviewsList.classList.add("ready");
+                    reviewsList.style.display = "grid"; // или block если не grid
                 }
             
                 initReviews();
