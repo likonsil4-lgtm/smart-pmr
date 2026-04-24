@@ -2639,50 +2639,59 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
             
-                const reviews = document.querySelectorAll("#reviews-list .service-card");
                 const btn = document.getElementById("toggleReviewsBtn");
             
+                function getReviews() {
+                    return document.querySelectorAll("#reviews-list .service-card");
+                }
+            
                 function hideExtra() {
+                    const reviews = getReviews();
+            
                     reviews.forEach((card, index) => {
                         if (index >= 4) {
-                            card.classList.add("review-hidden");
+                            card.style.display = "none";
+                        } else {
+                            card.style.display = "block";
                         }
                     });
+            
                     btn.textContent = "Показать ещё отзывы";
                     btn.dataset.open = "false";
                 }
             
                 function showAll() {
+                    const reviews = getReviews();
+            
                     reviews.forEach(card => {
-                        card.classList.remove("review-hidden");
+                        card.style.display = "block";
                     });
+            
                     btn.textContent = "Скрыть отзывы";
                     btn.dataset.open = "true";
                 }
             
-                setTimeout(() => {
-                    const newReviews = document.querySelectorAll("#reviews-list .service-card");
+                function initReviews() {
+                    const reviews = getReviews();
             
-                    if (newReviews.length <= 4) {
+                    if (reviews.length <= 4) {
                         btn.style.display = "none";
                         return;
                     }
             
-                    newReviews.forEach((card, index) => {
-                        if (index >= 4) {
-                            card.classList.add("review-hidden");
-                        }
-                    });
+                    hideExtra();
+                }
             
-                    btn.addEventListener("click", function () {
-                        if (btn.dataset.open === "true") {
-                            hideExtra();
-                        } else {
-                            showAll();
-                        }
-                    });
+                // ждём пока Firebase загрузит отзывы
+                setTimeout(initReviews, 1500);
             
-                }, 500);
+                btn.addEventListener("click", function () {
+                    if (btn.dataset.open === "true") {
+                        hideExtra();
+                    } else {
+                        showAll();
+                    }
+                });
             
             });
         </script>
