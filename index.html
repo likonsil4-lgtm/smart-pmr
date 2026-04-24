@@ -1694,6 +1694,33 @@
                 background: linear-gradient(180deg, #1a2436 0%, #0f172a 100%);
             }
         }
+        .review-hidden {
+            display: none;
+        }
+        
+        .reviews-toggle-wrap {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .reviews-toggle-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        
+        .reviews-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(14,165,233,0.25);
+        }
+
+        
     </style>
 </head>
 <body>
@@ -1903,33 +1930,16 @@
                 <a href="#contact" class="btn btn-primary">Оставить заявку</a>
             </div>
         </div>
+        <div id="reviews-list" class="services-grid"></div>
 
-        <!-- Заглушка будущей системы отзывов (пока скрыта) -->
-        <div class="reviews-system-preview scroll-reveal" style="display: none;">
-            <div class="system-card">
-                <div class="system-icon">🔐</div>
-                <h4>Защищённая система отзывов</h4>
-                <p>Отзывы оставляются только по одноразовым ссылкам, которые мы отправляем реальным клиентам после выполнения работ.</p>
-                <div class="system-steps">
-                    <div class="sys-step">
-                        <span class="sys-num">1</span>
-                        <span>Вы выполняете заказ</span>
-                    </div>
-                    <div class="sys-step">
-                        <span class="sys-num">2</span>
-                        <span>Мы отправляем ссылку на email</span>
-                    </div>
-                    <div class="sys-step">
-                        <span class="sys-num">3</span>
-                        <span>Клиент ставит оценку и пишет текст</span>
-                    </div>
-                    <div class="sys-step">
-                        <span class="sys-num">4</span>
-                        <span>Отзыв автоматически появляется на сайте</span>
-                    </div>
-                </div>
-            </div>
+        <div class="reviews-toggle-wrap">
+            <button id="toggleReviewsBtn" class="reviews-toggle-btn">
+                Показать ещё отзывы
+            </button>
         </div>
+
+
+        
     </section>
 
     <!-- CTA -->
@@ -2624,6 +2634,56 @@
                     
                 }
     
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            
+                const reviews = document.querySelectorAll("#reviews-list .service-card");
+                const btn = document.getElementById("toggleReviewsBtn");
+            
+                function hideExtra() {
+                    reviews.forEach((card, index) => {
+                        if (index >= 4) {
+                            card.classList.add("review-hidden");
+                        }
+                    });
+                    btn.textContent = "Показать ещё отзывы";
+                    btn.dataset.open = "false";
+                }
+            
+                function showAll() {
+                    reviews.forEach(card => {
+                        card.classList.remove("review-hidden");
+                    });
+                    btn.textContent = "Скрыть отзывы";
+                    btn.dataset.open = "true";
+                }
+            
+                setTimeout(() => {
+                    const newReviews = document.querySelectorAll("#reviews-list .service-card");
+            
+                    if (newReviews.length <= 4) {
+                        btn.style.display = "none";
+                        return;
+                    }
+            
+                    newReviews.forEach((card, index) => {
+                        if (index >= 4) {
+                            card.classList.add("review-hidden");
+                        }
+                    });
+            
+                    btn.addEventListener("click", function () {
+                        if (btn.dataset.open === "true") {
+                            hideExtra();
+                        } else {
+                            showAll();
+                        }
+                    });
+            
+                }, 500);
+            
             });
         </script>
     </body>
